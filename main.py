@@ -132,7 +132,9 @@ class XAUUSD_Trading_System:
             sl = current_price + 5.0
             tp = current_price - 10.0
         else:
-            return "⏳ لا توجد فرصة متوافقة مع شروط النظام حالياً."
+            msg = "⏳ لا توجد فرصة متوافقة مع شروط النظام حالياً."
+            self.notifier.send_message(f"ℹ️ **تحديث سوق الذهب:**\n{msg}")
+            return msg
 
         # 4. حساب إدارة المخاطر
         risk_data = self.risk_mgr.calculate_position(current_price, sl, tp)
@@ -159,8 +161,8 @@ class XAUUSD_Trading_System:
 # 6. نقطة التشغيل الرئيسية (Execution)
 # ==========================================
 if __name__ == "__main__":
-    BOT_TOKEN = None  # أدخل توكن البوت الخاص بك هنا لاحقاً
-    CHAT_ID = None    # أدخل أيدي المحادثة الخاص بك هنا لاحقاً
+    BOT_TOKEN = "8651437637:AAF4rEY8bTdYrP7_A0ZI1lCH1I92Aijkm54"
+    CHAT_ID = "1432340574"
 
     # تشغيل النظام
     system = XAUUSD_Trading_System(
