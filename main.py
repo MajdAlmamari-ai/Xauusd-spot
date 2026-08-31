@@ -102,7 +102,6 @@ class TelegramNotifier:
         except Exception as e:
             print(f"❌ خطأ في إرسال التليجرام: {e}")
             return False
-
 # ==========================================
 # 5. النظام الرئيسي للتداول (Trading System)
 # ==========================================
