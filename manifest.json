@@ -1,0 +1,21 @@
+{
+  "short_name": "الذهب PWA",
+  "name": "تطبيق تحليل الذهب المباشر - XAUUSD",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2991/2991148.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2991/2991148.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/Xauusd-spot/index.html",
+  "background_color": "#06090e",
+  "theme_color": "#06090e",
+  "display": "standalone",
+  "orientation": "portrait"
+}
