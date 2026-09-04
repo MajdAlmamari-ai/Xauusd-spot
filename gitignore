@@ -1,0 +1,28 @@
+# مجلدات البيانات
+backups/
+sessions/
+logs/
+*.log
+*.json
+
+# ملفات البيئة
+.env
+config.local.py
+
+# ملفات Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
