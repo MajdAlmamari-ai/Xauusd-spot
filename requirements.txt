@@ -1,0 +1,7 @@
+# أضف هذه الأسطر في نهاية requirements.txt
+undetected-chromedriver>=3.5.0
+selenium>=4.0.0
+selenium-stealth>=1.0.6
+fake-useragent>=1.4.0
+webdriver-manager>=3.8.0
+python-dotenv>=0.19.0
