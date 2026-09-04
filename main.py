@@ -1,14 +1,18 @@
 import requests
 from datetime import datetime
 
-# بيانات البوت
+# بيانات البوت (ضع التوكن الصحيح)
 BOT_TOKEN = "8651437637:AAF4rEY8bTdYrP7_A0ZI1lCH1I92Aijkm54"
 CHAT_ID = "1432340574"
 
 def send_message(text):
     """إرسال رسالة إلى تليجرام"""
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    data = {"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"}
+    data = {
+        "chat_id": CHAT_ID,
+        "text": text,
+        "parse_mode": "Markdown"
+    }
     try:
         r = requests.post(url, json=data, timeout=10)
         if r.status_code == 200:
@@ -29,7 +33,7 @@ def get_gold_price():
             return float(r.json().get("price", 4472.91))
     except:
         pass
-    return 4472.91
+    return 4472.91  # قيمة احتياطية
 
 # تنفيذ البوت
 print("🚀 تشغيل بوت الذهب...")
