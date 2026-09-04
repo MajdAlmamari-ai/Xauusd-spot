@@ -413,8 +413,8 @@ class ScenarioTree:
 # ============================================================
 class TelegramBot:
     def __init__(self, token=None, chat_id=None):
-        self.token = token
-        self.chat_id = chat_id
+        self.token = 8651437637:AAF4rEY8bTdYrP7_A0ZI1lCH1I92Aijkm54
+        self.chat_id = 1432340574
         
     def send_analysis(self, scenarios, smc_analysis, price):
         """إرسال تحليل كامل مع السيناريوهات"""
