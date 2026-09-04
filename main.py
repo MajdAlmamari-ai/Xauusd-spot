@@ -16,14 +16,8 @@ def send_message(text):
     data = {"chat_id": CHAT_ID, "text": text, "parse_mode": "Markdown"}
     try:
         r = requests.post(url, json=data, timeout=10)
-        if r.status_code == 200:
-            print("✅ تم الإرسال")
-            return True
-        else:
-            print(f"❌ فشل: {r.status_code}")
-            return False
-    except Exception as e:
-        print(f"❌ خطأ: {e}")
+        return r.status_code == 200
+    except:
         return False
 
 def get_gold_price():
@@ -37,16 +31,14 @@ def get_gold_price():
         pass
     return 4472.91
 
-def analyze_gold(price):
-    """تحليل متكامل للذهب مع توصيات"""
+def analyze_market(price):
+    """تحليل السوق وإنتاج توصيات"""
     
     # مستويات SMC
-    bsl = round(price + 8, 2)      # سيولة شراء
-    ssl = round(price - 6, 2)      # سيولة بيع
-    resistance = round(price + 5, 2) # مقاومة
-    support = round(price - 4, 2)    # دعم
-    ob_buy = f"{round(price - 3, 2)} - {round(price - 1, 2)}"
-    ob_sell = f"{round(price + 1, 2)} - {round(price + 3, 2)}"
+    bsl = round(price + 8, 2)      # Buy-Side Liquidity
+    ssl = round(price - 6, 2)      # Sell-Side Liquidity
+    resistance = round(price + 5, 2)
+    support = round(price - 4, 2)
     
     # تحديد الاتجاه والتوصية
     if price > 4475:
@@ -56,8 +48,7 @@ def analyze_gold(price):
         tp = bsl
         sl = ssl
         rr = "1:2.0"
-        reason = "السعر فوق مستوى المقاومة الرئيسي، مع وجود زخم صاعد"
-        confidence = "75%"
+        reason = "السعر فوق المقاومة مع زخم صاعد"
     elif price < 4470:
         bias = "🔴 هابط (Bearish)"
         action = "بيع"
@@ -65,20 +56,15 @@ def analyze_gold(price):
         tp = ssl
         sl = bsl
         rr = "1:1.8"
-        reason = "السعر تحت مستوى الدعم الرئيسي، مع وجود ضغط بيعي"
-        confidence = "70%"
+        reason = "السعر تحت الدعم مع ضغط بيعي"
     else:
         bias = "⚪ محايد (Neutral)"
         action = "انتظار"
-        entry = "لا توجد إشارة واضحة"
+        entry = "لا توجد إشارة"
         tp = resistance
         sl = support
         rr = "1:1.2"
-        reason = "السعر في منطقة تذبذب، انتظر كسر أحد المستويات"
-        confidence = "50%"
-    
-    # حساب حجم العقد
-    lot_size = 0.2 if action != "انتظار" else 0.0
+        reason = "السعر في منطقة تذبذب"
     
     return {
         'price': price,
@@ -89,90 +75,49 @@ def analyze_gold(price):
         'sl': sl,
         'rr': rr,
         'reason': reason,
-        'confidence': confidence,
-        'lot_size': lot_size,
         'bsl': bsl,
         'ssl': ssl,
         'resistance': resistance,
-        'support': support,
-        'ob_buy': ob_buy,
-        'ob_sell': ob_sell
+        'support': support
     }
 
 # ============================================================
 # التشغيل الرئيسي
 # ============================================================
 def main():
-    print("🚀 تشغيل بوت تحليل الذهب المتقدم...")
+    print("🚀 تشغيل بوت تحليل الذهب...")
     
-    # جلب السعر
     price = get_gold_price()
-    analysis = analyze_gold(price)
+    analysis = analyze_market(price)
     
-    # بناء الرسالة
-    msg = f"""📊 **تقرير تحليل XAUUSD**
-{'─' * 30}
+    msg = f"""📊 **تقرير XAUUSD**
+{'─' * 25}
 
-💰 **السعر الحالي:** {analysis['price']:.2f}
+💰 **السعر:** {analysis['price']:.2f}
 📈 **الاتجاه:** {analysis['bias']}
-🎯 **الثقة:** {analysis['confidence']}
 
-{'─' * 30}
-🎯 **مناطق السيولة (SMC):**
-• BSL (سيولة شراء): {analysis['bsl']}
-• SSL (سيولة بيع): {analysis['ssl']}
+🎯 **السيولة:**
+• BSL: {analysis['bsl']}
+• SSL: {analysis['ssl']}
 
-📊 **الدعم والمقاومة:**
-• المقاومة: {analysis['resistance']}
-• الدعم: {analysis['support']}
+📊 **المستويات:**
+• مقاومة: {analysis['resistance']}
+• دعم: {analysis['support']}
 
-📦 **الأوردر بلوك:**
-• منطقة شراء: {analysis['ob_buy']}
-• منطقة بيع: {analysis['ob_sell']}
-
-{'─' * 30}
 📋 **التوصية:**
-• الإجراء: **{analysis['action']}**
-• نقطة الدخول: {analysis['entry']}
-• الهدف (TP): {analysis['tp']}
-• وقف الخسارة (SL): {analysis['sl']}
-• نسبة المخاطرة/المكافأة: {analysis['rr']}
-• حجم العقد: {analysis['lot_size']} لوت
+• **{analysis['action']}** 
+• الدخول: {analysis['entry']}
+• TP: {analysis['tp']}
+• SL: {analysis['sl']}
+• RR: {analysis['rr']}
 
-💡 **السبب:**
-{analysis['reason']}
+💡 {analysis['reason']}
 
-{'─' * 30}
-🔄 تم التحديث: {datetime.now().strftime('%H:%M:%S')}
+🔄 {datetime.now().strftime('%H:%M:%S')}
 """
     
-    # إرسال الرسالة
     send_message(msg)
-    print(f"✅ تم إرسال التحليل: {price:.2f}")
+    print(f"✅ تم الإرسال: {price:.2f}")
 
-# ============================================================
-# تشغيل مستمر
-# ============================================================
-def run_forever():
-    print("🔄 التشغيل المستمر (كل 15 دقيقة)...")
-    import time
-    while True:
-        main()
-        time.sleep(900)  # 15 دقيقة
-
-# ============================================================
-# نقطة الدخول
-# ============================================================
 if __name__ == "__main__":
-    print("\n" + "="*40)
-    print("🤖 بوت تحليل الذهب المتقدم")
-    print("="*40)
-    print("1. تشغيل مرة واحدة")
-    print("2. تشغيل مستمر (كل 15 دقيقة)")
-    
-    choice = input("\nاختر (1/2): ").strip()
-    
-    if choice == "2":
-        run_forever()
-    else:
-        main()
+    main()
