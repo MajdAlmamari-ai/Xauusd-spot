@@ -1,4 +1,4 @@
-# # config.py
+# config.py
 import os
 from dotenv import load_dotenv
 
@@ -18,8 +18,8 @@ class Config:
     RISK_PERCENT = float(os.getenv('RISK_PERCENT', 0.01))
 
     # ============================================================
-    # ✅ إعدادات التليجرام (داخل الكلاس)
+    # إعدادات التليجرام
     # ============================================================
-    TELEGRAM_ENABLED = os.getenv('TELEGRAM_ENABLED', 'true').lower() == 'true'
-    TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', '8651437637:AAF4rEY8bTdYrP7_A0ZI1lCH1I92Aijkm54')
-    TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '1432340574')
+    TELEGRAM_TOKEN = "8651437637:AAF4rEY8bTdYrP7_A0ZI1lCH1I92Aijkm54"
+    TELEGRAM_CHAT_ID = "1432340574"
+    TELEGRAM_ENABLED = True
