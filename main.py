@@ -1,4 +1,4 @@
-# main.py - النظام المتكامل (بدون طبقة المجتمع)
+# main.py - النظام المتكامل (للاستخدام الشخصي)
 import sys
 import os
 import logging
@@ -26,6 +26,7 @@ from analysis_layer.smart_money.tracker import SmartMoneyTracker
 from presentation_layer.app import app
 from presentation_layer.alerts import AlertSystem
 from presentation_layer.reports import ReportGenerator
+from presentation_layer.telegram_bot import TelegramBot
 
 # إعداد التسجيل
 os.makedirs('logs', exist_ok=True)
@@ -62,6 +63,7 @@ class XAUUSDPlatform:
         # الطبقة الثالثة: العرض
         self.alert_system = AlertSystem()
         self.report_generator = ReportGenerator()
+        self.telegram = TelegramBot()
         
         self.current_data = None
         self.current_analysis = None
@@ -125,8 +127,17 @@ class XAUUSDPlatform:
         
         # 10. توليد التقرير النهائي
         report = self.report_generator.generate_report(analysis_data)
+        analysis_data['report'] = report
         logger.info(f"✅ التوصية: {report.get('recommendation', 'N/A')}")
         logger.info(f"⚖️ المخاطر: {report.get('risk_assessment', {}).get('description', 'N/A')}")
+        
+        # 11. إرسال التقرير عبر تليجرام
+        if self.telegram.enabled:
+            try:
+                self.telegram.send_analysis_report(analysis_data)
+                logger.info("📱 تم إرسال التقرير إلى تليجرام")
+            except Exception as e:
+                logger.error(f"❌ فشل إرسال التقرير إلى تليجرام: {e}")
         
         return analysis_data
     
